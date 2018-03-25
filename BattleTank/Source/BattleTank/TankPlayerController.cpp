@@ -8,7 +8,6 @@ void ATankPlayerController::BeginPlay()
 	auto ControlledTank = GetControlledTank();
 	if (!ControlledTank) { return; }
 	UE_LOG(LogTemp, Warning, TEXT("%s Begin Play"), *(ControlledTank->GetName()));
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
 }
 
 ATank * ATankPlayerController::GetControlledTank() const
