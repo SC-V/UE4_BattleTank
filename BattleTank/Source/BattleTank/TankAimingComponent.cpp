@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
-
+#include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -13,7 +13,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
 // Called when the game starts
 void UTankAimingComponent::BeginPlay()
 {
@@ -23,12 +22,17 @@ void UTankAimingComponent::BeginPlay()
 	
 }
 
-
 // Called every frame
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UTankAimingComponent::AimAt(FVector HitLocation)
+{
+	auto OurTankName = GetOwner()->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at: %s"), *OurTankName, *(HitLocation.ToString()));
 }
 
