@@ -15,6 +15,9 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	void AimAt(FVector HitLocation);
+	
+	UFUNCTION(BlueprintCallable , Category = Setup)
+	void SetBarrelReference(UStaticMeshComponent * BarrelToSet);
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,4 +29,7 @@ private:
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere , Category = Firing)
+	float LaunchSpeed = 100000; // Sensible starting value of 1000 m/s
 };
