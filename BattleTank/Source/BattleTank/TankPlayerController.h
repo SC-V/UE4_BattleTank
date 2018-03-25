@@ -15,10 +15,14 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 private:
-	ATank * GetControlledTank() const;
 	void BeginPlay() override;
+	// Get pointer to the human controlled tank
+	ATank * GetControlledTank() const;
+	// Return an OUT parameter, true if hit landscape
+	bool GetSightRayHitLocation(FVector & HitLocation) const; 
+	// Move the turret towards crosshair (position defined by GetSightRayHitLocation)
 	void AimTowardsCrosshair();
-
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 
