@@ -18,5 +18,8 @@ private:
 	ATank * GetControlledTank() const;
 	ATank * GetPlayerTank() const;
 	void BeginPlay() override;
-			
+	
+public:
+	virtual void Tick(float DeltaTime) override;
+
 };
