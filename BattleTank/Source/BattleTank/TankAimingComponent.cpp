@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
 #include "TankAimingComponent.h"
 
 // Sets default values for this component's properties
@@ -13,23 +15,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
 {
 	Barrel = BarrelToSet;
@@ -37,6 +22,34 @@ void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Firing at %f"), LaunchSpeed);
+	if (!Barrel) { return; }
+	FVector OutLaunchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	// Calculate the OutLaunchVelocity
+
+	if (UGameplayStatics::SuggestProjectileVelocity(
+		this,
+		OutLaunchVelocity,
+		StartLocation,
+		HitLocation,
+		LaunchSpeed,
+		ESuggestProjVelocityTraceOption::DoNotTrace)
+		)	{
+				auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+				// auto TankName = GetOwner()->GetName();
+				// UE_LOG(LogTemp, Warning, TEXT("Tank %s is firing at %s"), *TankName, *AimDirection.ToString());
+				MoveBarrelTowards(AimDirection);
+			}
+	
 }
 
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	// Work-out difference between current barrel rotation and aim direction
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
+	// Move the barrel the right amount this frame
+	// Given a max elevation speed and the frame time
+}
