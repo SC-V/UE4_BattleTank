@@ -6,7 +6,7 @@
 void UTankTurret::Rotate(float RelativeSpeed)
 {
 	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f : Turret->Rotate() called at speed %f"), Time, RelativeSpeed)
+	//UE_LOG(LogTemp, Warning, TEXT("%f : Turret->Rotate() called at speed %f"), Time, RelativeSpeed)
 
 	RelativeSpeed = FMath::Clamp<float>(RelativeSpeed, -1, +1);
 
