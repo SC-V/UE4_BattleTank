@@ -49,7 +49,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 				// auto TankName = GetOwner()->GetName();
 				// UE_LOG(LogTemp, Warning, TEXT("Tank %s is firing at %s"), *TankName, *AimDirection.ToString());
 				MoveBarrelTowards(AimDirection);
-				MoveTurretTowards(AimDirection);
+				//MoveTurretTowards(AimDirection); // If using separate functions
 			}
 	
 }
@@ -63,15 +63,21 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
 	
 	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number
-}
 
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-	// Work-out difference between current barrel rotation and aim direction
-	auto TurretRotator = Barrel->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator - TurretRotator;
-	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
+	if (FMath::Abs(DeltaRotator.Yaw) > 180.F)
+	{
+		DeltaRotator.Yaw *= -1.F;
+	}
 
 	Turret->Rotate(DeltaRotator.Yaw); // TODO remove magic number
 }
+
+//void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+//{
+//	auto TurretRotator = Barrel->GetForwardVector().Rotation();
+//	auto AimAsRotator = AimDirection.Rotation();
+//	auto DeltaRotator = AimAsRotator - TurretRotator;
+//	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
+//
+//	Turret->Rotate(DeltaRotator.Yaw); // TODO remove magic number
+//}
