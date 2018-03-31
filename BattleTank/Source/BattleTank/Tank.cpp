@@ -52,7 +52,7 @@ void ATank::Fire()
 	if (!Barrel) { return; }
 
 	// Spawn a projectile
-	if (Barrel && isReloaded)
+	if (Barrel && ProjectileBlueprint && isReloaded)
 	{
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
