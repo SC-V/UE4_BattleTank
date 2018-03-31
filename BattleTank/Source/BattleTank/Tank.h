@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 class UTankAimingComponent; // Forward declaration
 class UTankBarrel; // Forward declaration
+class UTankTurret; // Forward declaration
 UCLASS()
 class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of APawn which is a subtype of AActor
 {
@@ -18,6 +18,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable , Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* TurretToSet);
 
 protected:
 	// Called when the game starts or when spawned
