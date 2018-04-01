@@ -5,9 +5,10 @@
 
 void UTankTrack::SetThrottle(float Throttle)
 {
+	// Debug log
 	//auto Time = GetWorld()->GetTimeSeconds();
-	auto Name = GetName();
-	UE_LOG(LogTemp, Error, TEXT("%s : Throttle: %f"), *Name, Throttle);
+	//auto Name = GetName();
+	//UE_LOG(LogTemp, Error, TEXT("%s : Throttle: %f"), *Name, Throttle);
 
 	// TODO clamp actual throttle value
 
