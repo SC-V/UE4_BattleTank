@@ -16,8 +16,6 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	
 private:
 	void BeginPlay() override;
-	// Get pointer to the human controlled tank
-	ATank * GetControlledTank() const;
 	// Return an OUT parameter, true if hit landscape
 	bool GetSightRayHitLocation(FVector & HitLocation) const; 
 	// Get look direction
@@ -27,6 +25,11 @@ private:
 	// Move the turret towards crosshair (position defined by GetSightRayHitLocation)
 	void AimTowardsCrosshair();
 	
+protected:
+	// Get pointer to the human controlled tank
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	ATank * GetControlledTank() const;
+
 public:
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere)

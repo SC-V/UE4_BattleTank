@@ -3,10 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
-#include "TankAimingComponent.generated.h"
+
 class UTankBarrel; // Forvard declaration
 class UTankTurret; // Forvard declaration
+
+UENUM()
+enum class EFiringState : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
+#include "Components/ActorComponent.h"
+#include "TankAimingComponent.generated.h"
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponent : public UActorComponent
 {
@@ -29,4 +40,7 @@ protected:
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
 
+
+	UPROPERTY(BlueprintReadOnly, Category = State)
+	EFiringState FiringState = EFiringState::Reloading;
 };
