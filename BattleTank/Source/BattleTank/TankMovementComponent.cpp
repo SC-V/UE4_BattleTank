@@ -41,8 +41,10 @@ void UTankMovementComponent::IntendMoveBackward(float Throw)
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
-	auto TankName = GetOwner()->GetName();
-	auto MoveVelocityString = MoveVelocity.ToString();
-	UE_LOG(LogTemp, Error, TEXT("Tank %s is vectoring to %s"), *TankName, *MoveVelocityString);
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	//UE_LOG(LogTemp, Error, TEXT("Tank %s is vectoring to %s"), *TankName, *MoveVelocityString);
 	
+	IntendMoveForward(FVector::DotProduct(AIForwardIntention, TankForward));
+
 }
