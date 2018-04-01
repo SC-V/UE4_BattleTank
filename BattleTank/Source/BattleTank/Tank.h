@@ -4,8 +4,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 class UTankAimingComponent; // Forward declarations
-class UTankBarrel; 
-class UTankTurret; class AProjectile; class UTankTrack;
+class UTankTrack; class UTankBarrel;
+class UTankTurret; class AProjectile; 
 UCLASS()
 class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of APawn which is a subtype of AActor
 {
@@ -40,10 +40,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;
 
-	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint; 
 
 	UTankBarrel * Barrel = nullptr;
 
-	double LastFireTime = 0;
+	float LastFireTime = 0;
 };
