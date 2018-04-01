@@ -19,8 +19,9 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerTank) 
 	{
-		// TODO Move towards the player
-				
+		// Move towards the player
+		MoveToActor(PlayerTank, AcceptanceRadius); // TODO Check radius is im cm
+
 		// Aim towards the player
 		ControlledTank->AimAt(PlayerTank->GetTargetLocation());
 		ControlledTank->Fire(); // TODO Make an interval between shots
