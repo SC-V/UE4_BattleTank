@@ -4,8 +4,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 class UTankAimingComponent; // Forward declarations
-class UTankBarrel;
-class UTankTurret; class AProjectile;
+class UTankBarrel; 
+class UTankTurret; class AProjectile; class UTankTrack;
 UCLASS()
 class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of APawn which is a subtype of AActor
 {
