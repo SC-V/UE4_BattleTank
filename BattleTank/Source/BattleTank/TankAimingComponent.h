@@ -7,7 +7,7 @@
 class UTankBarrel; // Forvard declaration
 class UTankTurret; // Forvard declaration
 
-UENUM()
+UENUM(BlueprintType)
 enum class EFiringState : uint8
 {
 	Reloading,
@@ -24,13 +24,15 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTankAimingComponent();
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
+	
 	// Interface for tanks aiming 
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
-	void SetBarrelReference(UTankBarrel * BarrelToSet);
-	void SetTurretReference(UTankTurret * TurretToSet);
+	// Sets default values for this component's properties
+	UTankAimingComponent();
+
 
 private:
 	void MoveBarrelTowards(FVector AimDirection);
@@ -40,7 +42,6 @@ protected:
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
 
-
-	UPROPERTY(BlueprintReadOnly, Category = State)
+	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 };

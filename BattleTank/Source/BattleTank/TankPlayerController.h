@@ -27,7 +27,7 @@ private:
 	
 protected:
 	// Get pointer to the human controlled tank
-	UFUNCTION(BlueprintCallable, Category = Setup)
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank * GetControlledTank() const;
 
 public:

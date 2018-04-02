@@ -5,34 +5,28 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "GameFramework/Actor.h"
+#include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
+#include "Projectile.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true; // TODO Should it even tick?
-
-	// ...
 }
 
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
 {
 	Turret = TurretToSet;
+	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	if (!Barrel) { return; }
+
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-	// Calculate the OutLaunchVelocity
 
 	if (UGameplayStatics::SuggestProjectileVelocity(
 		this,
@@ -46,37 +40,25 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace)
 		)	{
 				auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-				// auto TankName = GetOwner()->GetName();
-				// UE_LOG(LogTemp, Warning, TEXT("Tank %s is firing at %s"), *TankName, *AimDirection.ToString());
 				MoveBarrelTowards(AimDirection);
-				//MoveTurretTowards(AimDirection); // If using separate functions
 			}
 	
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	if (!Barrel || !Turret) { return; }
 	// Work-out difference between current barrel rotation and aim direction
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	
-	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch);
 
 	if (FMath::Abs(DeltaRotator.Yaw) > 180.F)
 	{
 		DeltaRotator.Yaw *= -1.F;
 	}
 
-	Turret->Rotate(DeltaRotator.Yaw); // TODO remove magic number
+	Turret->Rotate(DeltaRotator.Yaw);
 }
-
-//void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-//{
-//	auto TurretRotator = Barrel->GetForwardVector().Rotation();
-//	auto AimAsRotator = AimDirection.Rotation();
-//	auto DeltaRotator = AimAsRotator - TurretRotator;
-//	UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *DeltaRotator.ToString());
-//
-//	Turret->Rotate(DeltaRotator.Yaw); // TODO remove magic number
-//}
