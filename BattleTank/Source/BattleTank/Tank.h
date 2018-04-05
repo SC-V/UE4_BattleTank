@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
-class UTankAimingComponent; class UTankMovementComponent; // Forward declarations
+class UTankAimingComponent; // Forward declarations
 class UTankTrack; class UTankBarrel;
 class UTankTurret; class AProjectile; 
 UCLASS()
@@ -22,11 +22,11 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent * TankAimingComponent = nullptr;
-	
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent * TankMovementComponent = nullptr;
 
 private:
+	void BeginPlay() override;
+	
+	// TODO remove once firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 8000;
 
@@ -37,6 +37,6 @@ private:
 	TSubclassOf<AProjectile> ProjectileBlueprint; 
 
 	UTankBarrel * Barrel = nullptr; // TODO Remove
-
+	
 	float LastFireTime = 0;
 };
