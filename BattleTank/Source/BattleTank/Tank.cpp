@@ -18,7 +18,7 @@ ATank::ATank()
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimingComponent) { return; }
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -26,7 +26,7 @@ void ATank::Fire()
 {
 	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
 
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 	// Debug line: UE_LOG(LogTemp, Error, TEXT("Fire function is called, barrel is found"))
 	// Spawn a projectile
 	if (Barrel && isReloaded && ProjectileBlueprint)

@@ -5,9 +5,9 @@
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 #include "TankPlayerController.generated.h" //must be the last include
-class ATank;
+class ATank; 
 /**
- * 
+ *  Responsible for helping the player aim
  */
 UCLASS()
 class BATTLETANK_API ATankPlayerController : public APlayerController
@@ -29,6 +29,9 @@ protected:
 	// Get pointer to the human controlled tank
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank * GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent * AimCompRef);
 
 public:
 	virtual void Tick(float DeltaTime) override;
