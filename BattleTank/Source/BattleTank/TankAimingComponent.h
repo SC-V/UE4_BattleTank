@@ -28,15 +28,14 @@ public:
 	void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
 	
 	// Interface for tanks aiming 
-	void AimAt(FVector HitLocation, float LaunchSpeed);
+	void AimAt(FVector HitLocation);
 
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-
 private:
+	// Moves the barrel and turret on the tank
 	void MoveBarrelTowards(FVector AimDirection);
-	// void MoveTurretTowards(FVector AimDirection);
 
 protected:
 	UTankBarrel * Barrel = nullptr;
@@ -44,4 +43,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float LaunchSpeed = 4000;
 };

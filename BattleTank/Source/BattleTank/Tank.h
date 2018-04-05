@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
-class UTankAimingComponent; // Forward declarations
+
 class UTankTrack; class UTankBarrel;
 class UTankTurret; class AProjectile; 
 UCLASS()
@@ -14,14 +14,11 @@ class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of A
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	void Fire();
 
 protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent * TankAimingComponent = nullptr;
 
 private:
 	void BeginPlay() override;
