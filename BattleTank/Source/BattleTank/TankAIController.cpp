@@ -24,10 +24,10 @@ void ATankAIController::Tick(float DeltaTime)
 
 	// Aim towards the player
 	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	
 	AimingComponent->AimAt(PlayerTank->GetTargetLocation());
 	
-	// TODO fix firing
-	//ControlledTank->Fire(); // TODO Make an interval between shots
+	AimingComponent->Fire(); // TODO Make an interval between shots
 	
 }
 

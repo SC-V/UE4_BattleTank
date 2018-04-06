@@ -4,36 +4,20 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class UTankTrack; class UTankBarrel;
-class UTankTurret; class AProjectile; 
+
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of APawn which is a subtype of AActor
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ATank();
 
-	UFUNCTION(BlueprintCallable, Category = "Actions")
-	void Fire();
-
 protected:
+	// None
 
 private:
 	void BeginPlay() override;
-	
-	// TODO remove once firing is moved to aiming component
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 8000;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ReloadTimeInSeconds = 3;
-
-	UPROPERTY(EditAnywhere, Category = "Setup")
-	TSubclassOf<AProjectile> ProjectileBlueprint; 
-
-	UTankBarrel * Barrel = nullptr; // TODO Remove
-	
-	float LastFireTime = 0;
 };

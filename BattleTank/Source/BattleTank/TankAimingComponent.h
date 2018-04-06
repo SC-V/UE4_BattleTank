@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+class AProjectile; // Forvard declaration
 class UTankBarrel; // Forvard declaration
 class UTankTurret; // Forvard declaration
 
@@ -27,6 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
 	
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void Fire();
+
 	// Interface for tanks aiming 
 	void AimAt(FVector HitLocation);
 
@@ -37,6 +40,10 @@ private:
 	// Moves the barrel and turret on the tank
 	void MoveBarrelTowards(FVector AimDirection);
 
+	// Reloading state of the tank
+	bool isReloaded = false;
+	
+	float LastFireTime = 0;
 protected:
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;
@@ -46,4 +53,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float ReloadTimeInSeconds = 3;
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
 };
