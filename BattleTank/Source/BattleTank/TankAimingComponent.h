@@ -37,13 +37,23 @@ public:
 	UTankAimingComponent();
 
 private:
+	virtual void BeginPlay() override; 
+	
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) override;
+
 	// Moves the barrel and turret on the tank
 	void MoveBarrelTowards(FVector AimDirection);
+
+	// Checks if the barrel moves
+	bool IsBarrelMoving(FVector AimDirection);
 
 	// Reloading state of the tank
 	bool isReloaded = false;
 	
 	float LastFireTime = 0;
+
+	FVector AimDirection;
+
 protected:
 	UTankBarrel * Barrel = nullptr;
 	UTankTurret * Turret = nullptr;

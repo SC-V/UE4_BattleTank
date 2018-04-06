@@ -12,7 +12,31 @@
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true; // TODO Should it even tick?
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
+	if (!ensure(Barrel)) { return; }
+
+	if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds) 
+	{ 
+		FiringState = EFiringState::Reloading; 
+	}
+	else if (IsBarrelMoving(AimDirection))
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
+	}
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	LastFireTime = GetWorld()->GetTimeSeconds();
 }
 
 void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
@@ -25,10 +49,6 @@ void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * T
 void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!ensure(Barrel)) { return; }
-
-	isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (isReloaded) { FiringState = EFiringState::Locked; }
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -44,8 +64,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace)
 		)	{
-				auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+				AimDirection = OutLaunchVelocity.GetSafeNormal();
 				MoveBarrelTowards(AimDirection);
+				IsBarrelMoving(AimDirection);
 			}
 }
 
@@ -67,22 +88,31 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Turret->Rotate(DeltaRotator.Yaw);
 }
 
+bool UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForwardVector = Barrel->GetForwardVector();
+	return !(BarrelForwardVector.FVector::Equals(AimDirection, 0.001));
+}
+
 void UTankAimingComponent::Fire()
 {
-	
-	if (!ensure(Barrel)) { return; }
 	// Debug line: UE_LOG(LogTemp, Error, TEXT("Fire function is called, barrel is found"))
 	
 	// Spawn a projectile
-	if (Barrel && isReloaded && ProjectileBlueprint)
+	if (FiringState != EFiringState::Reloading)
 	{
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
+
 		Projectile->LaunchProjectile(LaunchSpeed);
-		FiringState = EFiringState::Reloading;
 		LastFireTime = GetWorld()->GetTimeSeconds();
+		FiringState = EFiringState::Reloading;
 	}
 }
