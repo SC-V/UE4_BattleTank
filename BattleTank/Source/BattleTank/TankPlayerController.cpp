@@ -26,6 +26,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 // Complex method to aim towards crosshair
 void ATankPlayerController::AimTowardsCrosshair()
 {
+	if (!GetPawn()) { return; } // e.g. if not possessing
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 
