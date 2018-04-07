@@ -27,7 +27,12 @@ void ATankAIController::Tick(float DeltaTime)
 	
 	AimingComponent->AimAt(PlayerTank->GetTargetLocation());
 	
-	AimingComponent->Fire(); // TODO Make an interval between shots
+	// If aiming or locked then Fire()
+	if (AimingComponent->GetFiringState() == EFiringState::Locked)
+	{
+		AimingComponent->Fire();
+	}
+
 	
 }
 

@@ -36,6 +36,8 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
+	EFiringState GetFiringState() const;
+
 private:
 	virtual void BeginPlay() override; 
 	
