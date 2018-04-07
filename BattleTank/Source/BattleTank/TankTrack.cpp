@@ -5,7 +5,7 @@
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UTankTrack::BeginPlay()
@@ -14,10 +14,16 @@ void UTankTrack::BeginPlay()
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
-void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult &Hit)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	//UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
+	DriveTrack();
+	ApplySidewaysForce();
+	CurrentThrottle = 0;
+}
+
+void UTankTrack::ApplySidewaysForce()
+{
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
 	auto SlippageSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
 	// Work-out the required acceleration this frame to correct
 	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
@@ -27,24 +33,16 @@ void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	TankRoot->AddForce(CorrectionForce);
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult &Hit)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Hit! Hit!"))
-}
-
 void UTankTrack::SetThrottle(float Throttle)
 {
-	// Debug log
-	//auto Time = GetWorld()->GetTimeSeconds();
-	//auto Name = GetName();
-	//UE_LOG(LogTemp, Error, TEXT("%s : Throttle: %f"), *Name, Throttle);
+	CurrentThrottle = FMath::Clamp<float>((CurrentThrottle + Throttle), -2, 2); // 2 for forward + rotation
+}
 
-	// TODO clamp actual throttle value
-
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
+void UTankTrack::DriveTrack()
+{
+	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
 

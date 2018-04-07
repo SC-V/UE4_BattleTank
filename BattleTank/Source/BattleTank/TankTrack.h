@@ -27,8 +27,14 @@ public:
 private:
 	UTankTrack();
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) override;
+
+	// Apply sideways force to prevent tank from sliding on the surface
+	void ApplySidewaysForce();
+	// Apply force to tracks to rotate and move forward/backward
+	void DriveTrack();
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent * HitComponent, AActor * OtherActor, UPrimitiveComponent * OtherComponent, FVector NormalImpulse, const FHitResult &Hit);
+
+	float CurrentThrottle = 0;
 };
