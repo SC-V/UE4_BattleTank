@@ -75,5 +75,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
-	int RoundsLeft = 3;
+	// Number of rounds tanks possesing
+	int RoundsLeft = 10;
 };

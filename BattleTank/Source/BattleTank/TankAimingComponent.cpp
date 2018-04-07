@@ -88,13 +88,17 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	
 	Barrel->Elevate(DeltaRotator.Pitch);
-
-	if (FMath::Abs(DeltaRotator.Yaw) > 180.F)
+	if (FMath::Abs(DeltaRotator.Yaw) < 180)
 	{
-		DeltaRotator.Yaw *= -1.F;
+		Turret->Rotate(DeltaRotator.Yaw);
 	}
-
-	Turret->Rotate(DeltaRotator.Yaw);
+	else // Avoid going the long-way round
+	{
+	//	UE_LOG(LogTemp, Warning, TEXT("Standard Yaw: %f"), DeltaRotator.Yaw)
+	//	UE_LOG(LogTemp, Warning, TEXT("Inverse Yaw: %f"), -DeltaRotator.Yaw)
+	//	UE_LOG(LogTemp, Warning, TEXT("Normalised Yaw: %f"), DeltaRotator.GetNormalized().Yaw)
+		Turret->Rotate(-DeltaRotator.Yaw);
+	}
 }
 
 bool UTankAimingComponent::IsBarrelMoving(FVector AimDirection)
