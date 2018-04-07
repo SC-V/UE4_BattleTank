@@ -1,5 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -12,7 +11,8 @@ enum class EFiringState : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 #include "Components/ActorComponent.h"
@@ -27,7 +27,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet);
 	
-	UFUNCTION(BlueprintCallable, Category = "Actions")
+	UFUNCTION(BlueprintCallable, Category = "Firing")
 	void Fire();
 
 	// Interface for tanks aiming 
@@ -37,6 +37,9 @@ public:
 	UTankAimingComponent();
 
 	EFiringState GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetRoundsLeft() const;
 
 private:
 	virtual void BeginPlay() override; 
@@ -64,7 +67,7 @@ protected:
 	EFiringState FiringState = EFiringState::Reloading;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 4000;
+	float LaunchSpeed = 8000;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3;
@@ -72,4 +75,5 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	int RoundsLeft = 3;
 };

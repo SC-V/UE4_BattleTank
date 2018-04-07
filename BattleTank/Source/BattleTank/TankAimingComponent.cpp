@@ -25,7 +25,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	//UE_LOG(LogTemp, Warning, TEXT("Ticking!"))
 	if (!ensure(Barrel)) { return; }
 
-	if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds) 
+	if (RoundsLeft <= 0)
+	{
+		FiringState = EFiringState::OutOfAmmo;
+	}
+	else if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTimeInSeconds) 
 	{ 
 		FiringState = EFiringState::Reloading; 
 	}
@@ -106,7 +110,7 @@ void UTankAimingComponent::Fire()
 	// Debug line: UE_LOG(LogTemp, Error, TEXT("Fire function is called, barrel is found"))
 	
 	// Spawn a projectile
-	if (FiringState != EFiringState::Reloading)
+	if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming)
 	{
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
@@ -120,5 +124,11 @@ void UTankAimingComponent::Fire()
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = GetWorld()->GetTimeSeconds();
 		FiringState = EFiringState::Reloading;
+		RoundsLeft--;
 	}
+}
+
+int UTankAimingComponent::GetRoundsLeft() const
+{
+	return RoundsLeft;
 }
