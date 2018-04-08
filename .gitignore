@@ -3,3 +3,26 @@ Tank_BG2.jpg
 Zombie Apocalypse.otf
 Zombie Apocalypse.ttf
 BattleTank/Content/UI/MainMenuBackground_2.uasset
+BattleTank/Content/Projectile/M_Metal_Gold.uasset
+BattleTank/Content/Projectile/Sphere.uasset
+BattleTank/Content/Projectile/T_MacroVariation.uasset
+BattleTank/Content/Projectile/T_Metal_Gold_D.uasset
+BattleTank/Content/Projectile/T_Metal_Gold_N.uasset
+BattleTank/Content/Mortar/B_base.uasset
+BattleTank/Content/Mortar/barrel.uasset
+BattleTank/Content/Mortar/base.uasset
+BattleTank/Content/Mortar/body.uasset
+BattleTank/Content/Mortar/emissive.uasset
+BattleTank/Content/Mortar/H_base.uasset
+BattleTank/Content/Mortar/head.uasset
+BattleTank/Content/_Levels/Blueprint_WallSconce.uasset
+BattleTank/Content/_Levels/FogBrightnessLUT.uasset
+BattleTank/Content/_Levels/M_LightStage_Arrows.uasset
+BattleTank/Content/_Levels/M_LightStage_Skybox_Black.uasset
+BattleTank/Content/_Levels/M_LightStage_Skybox_HDRI.uasset
+BattleTank/Content/_Levels/M_LightStage_Skybox_Master.uasset
+BattleTank/Content/_Levels/Skybox.uasset
+BattleTank/Content/_Levels/SM_Lamp_Wall.uasset
+BattleTank/Content/_Levels/SunlightColorLUT.uasset
+BattleTank/Content/_Levels/T_Ground_Grass_D.uasset
+BattleTank/Content/_Levels/T_Ground_Gravel_D.uasset
