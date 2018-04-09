@@ -13,9 +13,14 @@ class BATTLETANK_API ATank : public APawn //inheritance: ATank is a subtype of A
 
 public:
 	ATank();
+	// Called by the engine when actor damage is dealt
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
 protected:
-	// None
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 StartingHealth = 100;
+	UPROPERTY(VisibleAnywhere, Category = "Health")
+	int32 CurrentHealth = StartingHealth;
 
 private:
 	void BeginPlay() override;
