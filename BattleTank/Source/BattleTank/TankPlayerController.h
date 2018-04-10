@@ -25,9 +25,14 @@ private:
 	// Move the turret towards crosshair (position defined by GetSightRayHitLocation)
 	void AimTowardsCrosshair();
 	
+	UFUNCTION()
+	void OnControlledTankDeath();
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent * AimCompRef);
+
+	virtual void SetPawn(APawn* InPawn) override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
